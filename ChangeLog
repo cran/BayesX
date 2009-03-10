@@ -1,0 +1,20 @@
+2009-03-10  Daniel Sabanes Bove  <daniel.sabanesbove@campus.lmu.de>
+
+	* Add example for extractSamples.
+
+2009-03-03  Daniel Sabanes Bove  <daniel.sabanesbove@campus.lmu.de>
+
+	* Upload ringDirxy to SVN...
+
+2009-02-28  Daniel Sabanes Bove  <daniel.sabanesbove@campus.lmu.de>
+
+	* Write R code for ringDirxy, rework examples in shp2bnd
+
+2009-02-22  Daniel Sabanes Bove  <daniel.sabanesbove@campus.lmu.de>
+
+	* Include interfaces between SpatialPolgyons/bnd and nb/gra.
+
+	* Add namespace.
+	
+	
+

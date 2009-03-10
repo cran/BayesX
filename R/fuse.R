@@ -1,0 +1,2 @@
+fuse <- function(map, regions){
+}

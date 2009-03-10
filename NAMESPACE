@@ -1,0 +1,57 @@
+## BayesX package exports ********************
+
+export(add.neighbor,                    # neighbors handling
+       delete.neighbor,
+       get.neighbor,
+       drawmap,                         # plotting
+       get.centroids,
+       smooth.bnd,
+       plotautocor,
+       plotnonp,
+       plotsample,
+       plotsample.coda,
+       plotsurf,
+       nb2gra,                          # conversions
+       gra2nb,
+       sp2bnd,
+       shp2bnd,
+       bnd2sp,
+       bnd2gra,
+       createxymap,
+       read.bnd,                        # file handling
+       write.bnd,
+       read.gra,
+       write.gra,
+       extractSamples)                  # results handling
+
+
+## spatial packages imports ********************
+
+importFrom(sp,                          # package sp
+           Polygon,                     # functions
+           Polygons,
+           coordinates,
+           SpatialPolygons,
+           bbox,
+           polygons)
+
+## not necessary as shapefiles does not have a namespace:
+##
+## importFrom(shapefiles,                  # package shapefiles
+##            read.shapefile,              # functions
+##            read.dbf)
+
+## imports for drawing ********************
+
+importFrom(colorspace,
+           diverge_hcl)
+
+## imports for MCMC handling ********************
+
+importFrom(coda,
+           mcmc,
+           as.mcmc,
+           autocorr.plot)
+
+importFrom(splines,
+           spline.des)
