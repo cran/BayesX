@@ -61,10 +61,18 @@ stopifnot(identical(names(bndGermany),
                     length(germany)))
 
 ## compare contains-relations
-bndContainsData <- as.data.frame(attributes(bndGermany)[c("is.in", "contains")])
-originalContainsData <- as.data.frame(attributes(germany)[c("is.in", "contains")])
-stopifnot(all(bndContainsData[order(bndContainsData$is.in), ] ==
-              originalContainsData[order(originalContainsData$is.in), ]))
+surrounding <- attr(bndGermany, "surrounding")
+whichInner <- which(sapply(surrounding, length) > 0L)
+bndContainsData <- data.frame(inner=names(bndGermany)[whichInner],
+                              outer=unlist(surrounding))
+
+surrounding <- attr(germany, "surrounding")
+whichInner <- which(sapply(surrounding, length) > 0L)
+originalContainsData <- data.frame(inner=names(germany)[whichInner],
+                                   outer=unlist(surrounding))
+
+stopifnot(all(bndContainsData[order(bndContainsData$inner), ] ==
+              originalContainsData[order(originalContainsData$inner), ]))
 }
 \keyword{spatial}
 

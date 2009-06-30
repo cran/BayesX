@@ -1,0 +1,13 @@
+2009-06-30  Daniel Sabanés Bové  <daniel.sabanesbove@gmx.net>
+
+	* Start changelog.
+
+2009-06-30  Thomas Kneib  <thomas.kneib@uni-oldenburg.de>
+
+  * Changes in version 0.2-3:
+  
+    - bug fixes in bnd2gra (adjustments for regions contained in other regions 
+      and for regions consisting of multiple polygons).
+    - Attributes is.in and contains of map objects in bnd format have been 
+      replaced by the attribute surrounding
+    - minor bug fixed in write.gra

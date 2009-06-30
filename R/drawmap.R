@@ -5,21 +5,22 @@ drawmap <- function(data, map,
                     pcat=FALSE,
                     hcl.par=list(h=c(130,25), c=100, l=c(90,70)),
                     hsv.par=list(s=1, v=1), legend=TRUE, drawnames=FALSE, cex.names=0.7, 
-                    cex.legend=0.7, mar.min=2, ...)
+                    cex.legend=0.7, mar.min=2, density=15, ...)
 {
     if(! inherits(map,"bnd"))
         stop("Argument 'map' is not an object of class 'bnd'!")
 
     regions <- names(map)
     S <- length(regions)
-    is.in <- attr(map, "is.in")
     height2width <- attr(map, "height2width")
     height2width <- height2width*1.1 # Legendenkorrektur
 
-    if(length(is.in)){
-        ind <- match(is.in, regions)
-        regions <- c(regions[-ind],is.in)
-        map <- c(map[-ind], map[ind])
+    ## draw inner regions last: reorder therefore the map
+    surrounding <- attr(map, "surrounding")
+    innerRegionInds <- which(sapply(surrounding, length) > 0L)
+    if(length(innerRegionInds)){
+        regions <- c(regions[- innerRegionInds], regions[innerRegionInds])
+        map <- c(map[- innerRegionInds], map[innerRegionInds])
     }   
 
     old.par <- par(no.readonly=TRUE)
@@ -174,7 +175,7 @@ drawmap <- function(data, map,
         for (k in block1) {
             if (is.na(m[k])) {
                 polygon(map[[k]][, 1], map[[k]][, 2], col = white, border = FALSE)
-                polygon(map[[k]][, 1], map[[k]][, 2], density  = 15, lwd = 0.3, col = black)
+                polygon(map[[k]][, 1], map[[k]][, 2], density  = density, lwd = 0.3, col = black)
             }
             else 
                 polygon(map[[k]][, 1], map[[k]][, 2], col = fill.colors[m[k]], border = black)
@@ -182,7 +183,7 @@ drawmap <- function(data, map,
         for (k in block2) {
             if (is.na(m[k])) {
                 polygon(map[[k]][-1, 1], map[[k]][-1, 2], col = white, border = FALSE)
-                polygon(map[[k]][-1, 1], map[[k]][-1, 2], density = 15, lwd = 0.3, col = black)
+                polygon(map[[k]][-1, 1], map[[k]][-1, 2], density = density, lwd = 0.3, col = black)
             }
             else 
                 polygon(map[[k]][-1, 1], map[[k]][-1, 2], col = fill.colors[m[k]], border = black)

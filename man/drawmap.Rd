@@ -7,7 +7,10 @@
 Visualises variables that are spatially aligned according to a given map object. Each of the regions in a map will be coloured accoring to the value of the variable.
 }
 \usage{
-drawmap(data, map, regionvar=2, plotvar=3, limits, cols="hcl", nrcolors=100, swapcolors=FALSE, pcat=FALSE, hcl.par=list(h=c(130,25), c=100, l=c(90,70)), hsv.par=list(s=1, v=1), legend=TRUE, drawnames=FALSE, cex.names=0.7, cex.legend=0.7, mar.min=2, ...)}
+drawmap(data, map, regionvar=2, plotvar=3, limits, cols="hcl", nrcolors=100, 
+        swapcolors=FALSE, pcat=FALSE, hcl.par=list(h=c(130,25), c=100, l=c(90,70)), 
+        hsv.par=list(s=1, v=1), legend=TRUE, drawnames=FALSE, cex.names=0.7, 
+        cex.legend=0.7, mar.min=2, density=15, ...)}
 
 \arguments{
   \item{data}{Either the name of a file or a data frame containing the variables to be visualised. If missing, the map will be visualised without
@@ -27,6 +30,7 @@ drawmap(data, map, regionvar=2, plotvar=3, limits, cols="hcl", nrcolors=100, swa
   \item{cex.names}{Magnification to be used for the names (if \code{drawnames=TRUE}).}
   \item{cex.legend}{Magnification to be used for the legend.}
   \item{mar.min}{Controls the definition of boundaries. Could be either \code{NULL} for individual settings of \code{mar} or a value which defines \code{mar} as follows: The boundaries will be calculated according to the height to width ratio of the map with minimal boundary \code{mar.min}.}
+  \item{density}{Regions without data will be visualised with diagonal stripes. \code{density} defines how dense the stripes should be.}
   \item{...}{Further arguments to be passed to the plot calls that visualise the region boundaries (probably not useful at all).}
 }
 
@@ -39,7 +43,8 @@ germany <- read.bnd(system.file("examples/germany.bnd", package="BayesX"))
 drawmap(map=germany)
 drawmap(map=germany, drawnames=TRUE)
 
-res <- read.table(system.file("examples/spatial_f_regions_spatial.res", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/spatial_f_regions_spatial.res", 
+                              package="BayesX"), header=TRUE)
 
 drawmap(res, map=germany)
 drawmap(res, map=germany, limits=c(-2,4))

@@ -10,8 +10,9 @@ read.gra <- function(file, sorted=FALSE)
     ## extract the number of districts
     S <- mapinfo[1]
     mapinfo <- mapinfo[-1]
-    cat("Reading map ...\n")
     cat("Note: map consists of", S,"regions\n")
+
+    cat("Reading map ...")
 
     ## create a vector to contain the names of the districts and the adjacency matrix
     districts <- rep(0,S)
@@ -37,6 +38,8 @@ read.gra <- function(file, sorted=FALSE)
             mapinfo <- mapinfo[-(1:nrn)]
         }
     }
+
+    cat(" finished\n")
     
     if(sorted){
         ## sort districts and adjacency matrix

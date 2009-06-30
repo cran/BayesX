@@ -1,6 +1,6 @@
 #####################################################################################
 ## Author: Daniel Sabanes Bove [daniel *.* sabanesbove *a*t* campus *.* lmu *.* de]
-## Time-stamp: <[extractSamples.R] by DSB Mon 23/02/2009 22:15 (CET) on daniel@puc-home>
+## Time-stamp: <[extractSamples.R] by DSB Son 07/06/2009 19:40 (CEST)>
 ##
 ## Description:
 ## Extract samples and prediction info from BayesX results directory.
@@ -9,7 +9,8 @@
 ## 05/02/2009   file creation
 ## 06/02/2009   add na.string "." to import of predictions table
 ## 10/02/2009   add import of spatial estimates
-## 23/02/2009   plug into BayesX package
+## 23/02/2009   plug into BayesX package,
+##              see SVN logs for the further history! 
 #####################################################################################
 
 
@@ -97,8 +98,8 @@ extractSamples <- function(directoryWithBasename,
     }
 
     
-    ## process nonlinear functions with rw or spatial priors
-    rwInds <- grep(pattern=".+(rw|spatial)_sample\\.raw",
+    ## process nonlinear functions with rw or spatial priors, or random effects terms
+    rwInds <- grep(pattern=".+_(rw|spatial|random)_sample\\.raw",
                    x=resFiles)  
     for(sampleFile in resFiles[rwInds])
     {
@@ -113,9 +114,9 @@ extractSamples <- function(directoryWithBasename,
         ## coerce to MCMC objects and insert into list with correct name
         functionName <- sub(pattern=
                             paste(directoryWithBasename,
-                                  "(.+)_(rw|spatial)_sample\\.raw",
+                                  "(.+)_(rw|spatial|random)_sample\\.raw",
                                   sep="_"),
-                            replacement="\\1",
+                            replacement="\\1_\\2",
                             x=sampleFile)
         ret[[functionName]] <- list(functionSamples=convert2Mcmc(functionSamples),
                                     varianceSamples=convert2Mcmc(varianceSamples))
@@ -123,7 +124,7 @@ extractSamples <- function(directoryWithBasename,
 
     
     ## process nonlinear functions modelled as psplines
-    psplineInds <- grep(pattern=".+pspline_sample\\.raw",
+    psplineInds <- grep(pattern=".+_pspline_sample\\.raw",
                        x=resFiles)  
     for(sampleFile in resFiles[psplineInds])
     {       
@@ -140,7 +141,7 @@ extractSamples <- function(directoryWithBasename,
                             paste(directoryWithBasename,
                                   "(.+)_pspline_sample\\.raw",
                                   sep="_"),
-                            replacement="\\1",
+                            replacement="\\1_pspline",
                             x=sampleFile)
         
         ## extract pspline parameters from log file

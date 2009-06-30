@@ -4,9 +4,7 @@ get.centroids <- function(map){
 
    regions <- names(map)
    S <- length(regions)
-   is.in <- attr(map, "is.in")
-   contains <- attr(map, "contains") 
-
+  
    A <- vector(length=S)
    centroid <- matrix(nrow=S, ncol=2)
 
@@ -20,22 +18,26 @@ get.centroids <- function(map){
       vec.y <- (map.k[1:(nrows-1),2] + map.k[2:nrows,2]) * vec.A
       centroid[k,2] <- sum(vec.y)/(6*A[k])
    }
-   
-   if(length(contains)){
-      for(l in 1:length(contains)){
-         k <- which(regions == contains[l])
-         ind <- which(regions == is.in[l])
+
+   surrounding <- attr(map, "surrounding")
+   whichAreInner <- which(sapply(surrounding, length) > 0L)
+   for(l in seq_along(whichAreInner))
+   {
+       ## which is the inner polygon index?
+       ind <- whichAreInner[l]
+       
+       ## which is the outer one?
+       k <- which(regions == surrounding[[ind]])
+       
+       A[k] <- sign(A[k]) * (abs(A[k]) - abs(A[ind]))
          
-         A[k] <- sign(A[k]) * (abs(A[k]) - abs(A[ind]))
-         
-         r <- c(centroid[ind,1] - centroid[k,1], centroid[ind,2] - centroid[k,2]) 
+       r <- c(centroid[ind,1] - centroid[k,1], centroid[ind,2] - centroid[k,2]) 
          a <- sqrt(r[1]^2 + r[2]^2)
          if(sum(r) != 0)
             r <- r/a
          s <- a*(-abs(A[ind])) / abs(A[k]) 
 
          centroid[k,] <- centroid[k,] + s * r
-      }
    }
    
    A <- abs(A)

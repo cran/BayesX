@@ -1,35 +1,103 @@
-bnd2gra <- function(map)
+bnd2gra <- function (map)
 {
-   if(! inherits(map, "bnd"))
-      stop("Argument 'map' is not an object of class 'bnd'!")
+    ## check class of argument
+    if (! inherits(map, "bnd"))
+        stop("argument 'map' is not an object of class 'bnd'")
 
-   S <- length(map)
-   districts <- names(map)
-   pmat <- matrix(0,S,S)
+    ## extract (unique) regions from the polygons
+    regions <- unique(names(map))
+    nRegions <- length(regions)
 
-   for(i in 1:(S-1)){
-      for(j in (i+1):S){
-          
-          region.i <- paste(map[[i]][, 1],
-                            map[[i]][, 2],
-                            sep="&")
-          region.j <- paste(map[[j]][, 1],
-                            map[[j]][, 2],
-                            sep="&")
+    ## initialize return matrix
+    retMatrix <- matrix(data=0,
+                        nrow=nRegions, ncol=nRegions,
+                        dimnames=list(regions, regions))
 
-         if(sum(region.i %in% region.j) >= 2)
-            pmat[i,j] <- pmat[j,i] <- -1   
-      }
-      if(i %% 25 == 0)
-         cat(paste("progress: ",round(i/S * 100, 2),"%\n", sep=""))   
-   }
-   
-   diag(pmat) <- -apply(pmat, 1, sum) 
-   
-   rownames(pmat) <- districts
-   colnames(pmat) <- districts
-   
-   class(pmat) <- "gra"
-   return(pmat)
+    ## helper function:
+    pointsMatrixToPointsCharVector <- function(pointsMatrix)
+    {
+        paste(pointsMatrix[, 1L],
+              pointsMatrix[, 2L],
+              sep="&")
+    }
+
+    ## check for neighboring polygons:
+    ## process only upper triangular part of the matrix, because it is symmetric.
+
+    ## counter for already processed pairs
+    nPairsProcessed <- 0L
+
+    ## how many pairs need to be processed?
+    nPairs <- (nRegions * (nRegions - 1L)) / 2L
+
+    ## and at which iterations should a progress message be printed?
+    nProgressIterations <- 10L
+    progressIterations <- seq(from=0L,
+                              to=nPairs,
+                              length=nProgressIterations + 1L)[- 1L]
+
+    cat("Start neighbor search ...\n")
+    
+    ## i is the row region number
+    for (i in seq_len(nRegions - 1L))
+    {
+        ## which polygons belong to region number i?
+        polyIndsRegion.i <- which(names(map) == regions[i])
+
+        ## make a vector of all points (x, y) in the format "x&y" which belong to this region
+        pointsRegion.i <- sapply(X=map[polyIndsRegion.i],
+                                 FUN=pointsMatrixToPointsCharVector)
+
+        ## j is the column region number
+        for (j in (i + 1):nRegions)
+        {
+            ## which polygons belong to region number j?
+            polyIndsRegion.j <- which(names(map) == regions[j])
+            
+            ## make a vector of all points (x, y) in the format "x&y" which belong to this region
+            pointsRegion.j <- sapply(X=map[polyIndsRegion.j],
+                                     FUN=pointsMatrixToPointsCharVector)
+
+            ## now decide if region i and j share at least 2 common points in their polygons
+            if (sum(pointsRegion.i %in% pointsRegion.j) >= 2L)
+            {
+                ## then they are neighbors!
+                retMatrix[i, j] <-
+                    retMatrix[j, i] <- - 1L
+            }
+
+            ## increment counter
+            nPairsProcessed <- nPairsProcessed + 1L
+            
+            ## echo progress?
+            if (nPairsProcessed %in% progressIterations)
+            {
+                ## echo percentage of processed pairs
+                percentageProcessed <- floor((nPairsProcessed * 100L) / nPairs)
+                cat(paste("progress: ", percentageProcessed, "%\n",
+                          sep = ""))
+            }            
+        }
+    }
+
+    cat("Neighbor search finished.\n")
+
+    ## add is.in relations
+    surrounding <- attr(map, "surrounding")
+    whichPolygonsAreInner <- which(sapply(surrounding, length) > 0L)   
+    for(innerInd in whichPolygonsAreInner)
+    {
+        innerRegion <- names(map)[innerInd]
+        outerRegion <- surrounding[[innerInd]]
+        
+        retMatrix[innerRegion, outerRegion] <-
+            retMatrix[outerRegion, innerRegion] <- - 1L
+    }
+
+    ## on the diagonal, there are the negative row sums
+    diag(retMatrix) <- - rowSums(retMatrix)
+
+    ## finally return the matrix as a graph object
+    class(retMatrix) <- "gra"
+    return(retMatrix)
 }
-     

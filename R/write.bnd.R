@@ -1,37 +1,64 @@
 write.bnd <- function(map, file, replace=FALSE)
 {
     if(! inherits(map,"bnd"))
-        stop("Argument 'map' is not an object of class 'bnd'!")
+        stop("argument 'map' is not an object of class 'bnd'")
+
+    ## coercions, checks
+    replace <- as.logical(replace)
+    file <- as.character(file)
+    stopifnot(identical(length(file), 1L),
+              identical(length(replace), 1L))    
 
     ## check whether the file exists
-    if(replace & file.exists(file))
-        test <- file.remove(file)
-    if(!replace & file.exists(file))
-        stop("Specified file already exists!")
+    if(file.exists(file))
+    {
+        if(replace)
+        {
+            removeSucceeded <- file.remove(file)
+            if(! removeSucceeded)
+            {
+                stop("file exists, but could not be removed")
+            }
+        } else {
+            stop("specified file already exists")
+        }        
+    }
 
-    ## no. of regions
-    regions <- names(map)
-    S <- length(regions)
+    myQuote <- function(string)
+    {
+        return(paste("\"", string, "\"",
+                     sep=""))
+    }
     
-    is.in <- attr(map, "is.in")
-    contains <- attr(map, "contains") 
-    w <- 1
+    ## names of the belonging regions
+    belongingRegions <- names(map)
     
-    for(i in 1:S){
+    ## no. of polygons
+    nPolygons <- length(map)
+
+    ## the surrounding list
+    surrounding <- attr(map, "surrounding")
+    
+    for(i in seq_len(nPolygons))
+    {
         dat <- map[[i]]
-        ind <- which(is.na(dat[,1]) | is.na(dat[,2]))
-        if(length(ind)>0)
-            dat <- dat[-ind,]
+        dat <- dat[complete.cases(dat), ]
         
-        temp <- paste("\"",regions[i],"\",",nrow(dat),sep="")
-        write(temp,file,append=TRUE)
+        temp <- paste(myQuote(belongingRegions[i]),
+                      nrow(dat),
+                      sep=",")
+        write(temp, file, append=TRUE)
         
-        if(regions[i] %in% is.in){
-            con <- paste("is.in,","\"",contains[w],"\"", sep="")
-            write(con,file,append=TRUE)
-            w <- w + 1
+        if(length(outerRegionName <- surrounding[[i]]))
+        {
+            con <- paste("is.in",
+                         myQuote(outerRegionName),
+                         sep=",")
+            write(con, file, append=TRUE)
         }
-        write.table(dat,file,append=TRUE,col.names=FALSE,row.names=FALSE,sep=",",quote=FALSE)
+        write.table(dat, file, append=TRUE,
+                    col.names=FALSE, row.names=FALSE,
+                    sep=",", quote=FALSE)
     }
 
     return(invisible())

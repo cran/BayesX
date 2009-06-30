@@ -21,7 +21,8 @@ plotautocor(data, ask = TRUE, lag.max=100, ...)
 \author{Felix Heinzl, Thomas Kneib}
 
 \examples{
-res <- read.table(system.file("examples/nonparametric_f_x_pspline_sample.raw", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/nonparametric_f_x_pspline_sample.raw", 
+                              package="BayesX"), header=TRUE)
 plotautocor(res)
 plotautocor(res, lag.max=50)
 }

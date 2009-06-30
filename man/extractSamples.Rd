@@ -8,7 +8,8 @@
   spline coefficients samples to function values samples.
 }
 \usage{
-extractSamples(directoryWithBasename, logfile = file.path(dirname(directoryWithBasename), "log.txt"))
+extractSamples(directoryWithBasename, 
+               logfile = file.path(dirname(directoryWithBasename), "log.txt"))
 }
 
 \arguments{

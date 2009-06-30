@@ -1,7 +1,7 @@
 #####################################################################################
 ## Author: Daniel Sabanes Bove [daniel *.* sabanesbove *a*t* campus *.* lmu *.* de]
 ## Project: BayesX
-## Time-stamp: <[spAndBndConversion.R] by DSB Son 22/02/2009 16:40 (CET) on daniel@puc-home>
+## Time-stamp: <[spAndBndConversion.R] by DSB Die 09/06/2009 21:19 (CEST)>
 ##
 ## Description:
 ## Convert a SpatialPolygons object from package sp to the bnd format
@@ -56,28 +56,22 @@ bnd2sp <- function(bndObject)
                                   ID=id)        
     }
 
-    ## add holes of inner regions to outer regions
-    holeData <- data.frame(is.in=bndAttributes$is.in,
-                           contains=bndAttributes$contains,
-                           stringsAsFactors=FALSE)
-
-    for(i in seq_len(nrow(holeData)))
+    ## add holes of inner polygons to outer regions
+    surrounding <- bndAttributes$surrounding
+    whichAreInner <- which(sapply(surrounding, length) > 0L)
+    for(innerInd in whichAreInner)
     {
-        ## extract IDs
-        innerId <- holeData$is.in[i]
-        outerId <- holeData$contains[i]
-        
-        ## extract lists of Polygon objects
-        innerPolys <- ret[[innerId]]@Polygons
+        ## get the hole
+        hole <- sp::Polygon(coords=bndObject[[innerInd]],
+                            hole=TRUE)
+
+        ## get outer polys list
+        outerId <- surrounding[[innerInd]]
         outerPolys <- ret[[outerId]]@Polygons
 
-        ## add all inner polys as holes to outer polys
-        numOuterPolys <- length(outerPolys)
-        for(j in seq_along(innerPolys))
-        {
-            outerPolys[[j + numOuterPolys]] <- sp::Polygon(coords=sp::coordinates(innerPolys[[j]]),
-                                                           hole=TRUE)
-        }
+        ## add the hole to outer polys
+        outerPolys <- c(outerPolys,
+                        hole)
 
         ## write back extended outer polys list as new Polygons object with same ID as before 
         ret[[outerId]] <- sp::Polygons(srl=outerPolys,
@@ -99,7 +93,7 @@ sp2bnd <-
                                         # ratio of height to width
              epsilon=sqrt(.Machine$double.eps)) # how much can two polygons differ (in maximumn
                                         # squared Euclidean distance) and still match each other?
-                                        
+    
 {
     ## check if S4 class of spObject is "SpatialPolygons"
     stopifnot(is(object=spObject,
@@ -158,9 +152,9 @@ sp2bnd <-
 
     ## now process all holes:
 
-    ## set up is.in and contains vectors
-    is.in <- character(0)
-    contains <- character(0)
+    ## set up surrounding list
+    surrounding <- replicate(n=numPolysProcessed,
+                             character())
     
     ## use number of coordinates as hash for quicker search for the embedded region
     polyDims <- sapply(ret, nrow)
@@ -169,30 +163,27 @@ sp2bnd <-
     for(i in seq_along(holes))
     {
         ## hash lookup
-        potentialMatches <- ret[which(holeDims[i] == polyDims)]
+        potentialMatchesInds <- which(holeDims[i] == polyDims)
 
         ## now more precise search in these potential matches
         matchFound <- FALSE
-        for(j in seq_along(potentialMatches))
+        for(j in potentialMatchesInds)
         {
             ## decide
             thisHole <- holes[[i]]
-            thisRegion <- potentialMatches[[j]]
+            thisRegion <- ret[[j]]
 
             squaredEuclideanDistances <-
                 rowSums((thisHole[rev(seq_len(nrow(thisHole))), ] - thisRegion)^2) 
             doesMatch <- max(squaredEuclideanDistances) < epsilon
 
-            ## if it matches, update the is.in and contains data
+            ## if it matches, update the surrounding data
             ## and break out of the for loop
             if(doesMatch)
             {
                 matchFound <- TRUE
-                
-                is.in <- c(is.in,
-                           names(potentialMatches)[j])
-                contains <- c(contains,
-                              names(holes)[i])
+
+                surrounding[[j]] <- names(holes)[i]
                 
                 ## we can proceed with the next hole:
                 break
@@ -209,8 +200,7 @@ sp2bnd <-
 
     ## finally collect information and return the bnd object
     ret <- structure(ret,
-                     is.in=is.in,
-                     contains=contains,
+                     surrounding=surrounding,
                      height2width=height2width,
                      class="bnd")
     return(ret)

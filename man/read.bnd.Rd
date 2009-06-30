@@ -18,8 +18,8 @@ read.bnd(file, sorted=FALSE)
 }
 
 \value{Returns a list of polygons that form the map. Additional attributes are
-  \item{is.in}{Vector of regions that are completely contains in another region.}
-  \item{contains}{Vector of regions containing the regions specified in argument \code{is.in}.}
+  \item{surrounding}{Parallel list where for each polygon, the name of a possible
+  surrounding region is saved.}
   \item{height2width}{Ratio between height and width of the map. Allows customised drawing and storage in files by specifying the appropriate height and width.}
   \item{class}{Indicates whether the map is stored in boundary format (\code{bnd}) or graph format (\code{gra}). Maps returned by \code{read.bnd} are of class \code{bnd}}
 }

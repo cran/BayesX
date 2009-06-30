@@ -8,7 +8,9 @@ Plots nonparametric function estimates obtained from BayesX
 }
 
 \usage{
-plotnonp(data, x = 2, y = c(3, 4, 5, 7, 8), ylim = NULL, lty = c(1, 2, 3, 2, 3), cols = rep(1, length(y)), month, year, step=12, xlab, ylab, ...)
+plotnonp(data, x = 2, y = c(3, 4, 5, 7, 8), ylim = NULL, 
+         lty = c(1, 2, 3, 2, 3), cols = rep(1, length(y)), month, year, step=12, 
+         xlab, ylab, ...)
 }
 
 \arguments{
@@ -35,16 +37,20 @@ plotnonp(data, x = 2, y = c(3, 4, 5, 7, 8), ylim = NULL, lty = c(1, 2, 3, 2, 3),
 
 \examples{
 
-res <- read.table(system.file("examples/nonparametric_f_x_pspline.res", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/nonparametric_f_x_pspline.res", 
+                              package="BayesX"), header=TRUE)
 plotnonp(res)
 plotnonp(res, x="x")
 plotnonp(res, x="x", y="pmean")
 plotnonp(res, x="x", y="pmed")
 plotnonp(res, x="x", y="pmed", ylim=c(-2,2))
-plotnonp(res, x="x", y=c("pmean", "pqu10", "pqu90"), lty=c(1,1,1), col=c("red","blue","blue"))
-plotnonp(res, xlab="some variable", ylab="f(some variable)", main="Nonlinear effect of some variable", sub="penalised spline")
+plotnonp(res, x="x", y=c("pmean", "pqu10", "pqu90"), lty=c(1,1,1), 
+         col=c("red","blue","blue"))
+plotnonp(res, xlab="some variable", ylab="f(some variable)", 
+         main="Nonlinear effect of some variable", sub="penalised spline")
 
-res <- read.table(system.file("examples/nonparametric2_f_time_pspline.res", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/nonparametric2_f_time_pspline.res", 
+                              package="BayesX"), header=TRUE)
 plotnonp(res)
 plotnonp(res, month=1, year=1980, step=12)
 

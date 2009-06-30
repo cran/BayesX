@@ -6,7 +6,8 @@
 Visualsises surface estimates obtained with BayesX.
 }
 \usage{
-plotsurf(data, x=2, y=3, z=4, mode=1, ticktype="detailed", expand=0.75, d=100, theta=-30, phi=25, ...)
+plotsurf(data, x=2, y=3, z=4, mode=1, ticktype="detailed", 
+         expand=0.75, d=100, theta=-30, phi=25, ...)
 }
 
 \arguments{
@@ -25,7 +26,8 @@ plotsurf(data, x=2, y=3, z=4, mode=1, ticktype="detailed", expand=0.75, d=100, t
 \seealso{\code{\link{drawmap}},\code{\link{plotautocor}},\code{\link{plotsample}},\code{\link{plotnonp}}}
 
 \examples{
-res <- read.table(system.file("examples/surface_f_x1_x2_pspline.res", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/surface_f_x1_x2_pspline.res", 
+                              package="BayesX"), header=TRUE)
 
 plotsurf(res)
 plotsurf(res, mode=2)

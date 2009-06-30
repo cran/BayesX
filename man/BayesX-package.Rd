@@ -27,7 +27,7 @@ License: \tab GPL-2\cr
 
 \author{Thomas Kneib, Felix Heinzl, Andreas Brezger, Daniel Sabanes Bove
 
-Maintainer: Thomas Kneib <thomas.kneib@stat.uni-muenchen.de>}
+Maintainer: Thomas Kneib <thomas.kneib@uni-oldenburg.de>}
 
 \references{\url{http://www.stat.uni-muenchen.de/~bayesx/}}
 

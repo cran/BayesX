@@ -65,8 +65,8 @@ createxymap <- function(x, y, districts=NULL, p=2, max.dist){
 
     names(bnd) <- districts
 
-    attr(bnd, "is.in") <- character(0)
-    attr(bnd, "contains") <- character(0)
+    attr(bnd, "surrounding") <- replicate(n=length(bnd),
+                                          expr=character())
     attr(bnd, "height2width") <- height2width
     class(bnd) <- "bnd"
 

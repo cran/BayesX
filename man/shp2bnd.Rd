@@ -18,11 +18,8 @@ shp2bnd(shpname, regionnames, check.is.in = TRUE)
   \item{check.is.in}{Test whether some regions are surrounded by other regions (FALSE speeds up the execution time but may result in a corrupted bnd-file)}
 }
 
-\value{Returns a boundary object, i.e. a list of polygons that form the map. Additional attributes are
-  \item{is.in}{Vector of regions that are completely contains in another region.}
-  \item{contains}{Vector of regions containing the regions specified in argument \code{is.in}.}
-  \item{height2width}{Ratio between height and width of the map. Allows customised drawing and storage in files by specifying the appropriate height and width.}
-  \item{class}{Indicates whether the map is stored in boundary format (\code{bnd}) or graph format (\code{gra}). Maps returned by \code{read.bnd} are of class \code{bnd}}
+\value{Returns a boundary object, i.e. a list of polygons that form the
+  map. See \code{\link{read.bnd}} for more information on the format.
 }
 
 \references{BayesX Reference Manual. Available from \url{http://www.stat.uni-muenchen.de/~bayesx/}}
