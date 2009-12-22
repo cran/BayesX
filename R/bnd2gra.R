@@ -38,6 +38,8 @@ bnd2gra <- function (map)
 
     cat("Start neighbor search ...\n")
     
+    pointsMatrix <- NULL
+
     ## i is the row region number
     for (i in seq_len(nRegions - 1L))
     {
@@ -45,7 +47,17 @@ bnd2gra <- function (map)
         polyIndsRegion.i <- which(names(map) == regions[i])
 
         ## make a vector of all points (x, y) in the format "x&y" which belong to this region
-        pointsRegion.i <- sapply(X=map[polyIndsRegion.i],
+        if(length(polyIndsRegion.i)>1)
+          {
+          pointsMatrix <- map[polyIndsRegion.i[1]]
+          for(k in 2:length(polyIndsRegion.i))
+            pointsMatrix[[1]] <- rbind(pointsMatrix[[1]], map[polyIndsRegion.i[k]][[1]])
+          }
+        else 
+          {
+          pointsMatrix <- map[polyIndsRegion.i]
+          }
+        pointsRegion.i <- sapply(X=pointsMatrix,
                                  FUN=pointsMatrixToPointsCharVector)
 
         ## j is the column region number
@@ -55,7 +67,17 @@ bnd2gra <- function (map)
             polyIndsRegion.j <- which(names(map) == regions[j])
             
             ## make a vector of all points (x, y) in the format "x&y" which belong to this region
-            pointsRegion.j <- sapply(X=map[polyIndsRegion.j],
+            if(length(polyIndsRegion.j)>1)
+              {
+              pointsMatrix <- map[polyIndsRegion.j[1]]
+              for(k in 2:length(polyIndsRegion.j))
+                pointsMatrix[[1]] <- rbind(pointsMatrix[[1]], map[polyIndsRegion.j[k]][[1]])
+              }
+            else 
+              {
+              pointsMatrix <- map[polyIndsRegion.j]
+              }
+            pointsRegion.j <- sapply(X=pointsMatrix,
                                      FUN=pointsMatrixToPointsCharVector)
 
             ## now decide if region i and j share at least 2 common points in their polygons

@@ -1,6 +1,6 @@
 #####################################################################################
 ## Author: Daniel Sabanes Bove [daniel *.* sabanesbove *a*t* campus *.* lmu *.* de]
-## Time-stamp: <[extractSamples.R] by DSB Son 07/06/2009 19:40 (CEST)>
+## Time-stamp: <[extractSamples.R] by DSB Fre 07/08/2009 15:42 (CEST)>
 ##
 ## Description:
 ## Extract samples and prediction info from BayesX results directory.
@@ -39,22 +39,9 @@ extractSamples <- function(directoryWithBasename,
     ## Extract MCMC parameters from log file
     bayesxLog <- readLines(logfile)
 
-    ## convenience function:
-    getNumbers <- function(stringList,  # list with the strings before the numbers
-                           stringVector) # look for the strings in this vector
-    {
-        lapply(stringList,
-               function(string)
-               as.numeric(sub(pattern=".+[[:blank:]]+([[:digit:]]+)$",
-                              replacement="\\1",
-                              x=
-                              stringVector[grep(pattern=
-                                                paste(".*",
-                                                      string),
-                                                x=stringVector)])))
-    }
-
-    numbers <- getNumbers(stringList=
+    ## use internal helper function, defined in separate R code file
+    ## to extract the numbers
+    numbers <- getNumbers(beforeStringsList=
                           list(Iterations="Number of iterations:",
                                BurnIn="Burn-in period:",
                                Thin="Thinning parameter:"),
@@ -63,7 +50,7 @@ extractSamples <- function(directoryWithBasename,
     ## setup return list
     ret <- list()
 
-    ## more convenience functions:
+    ## convenience functions:
     convert2Mcmc <- function(samples)   # just a shortcut
         coda::mcmc(data=samples,
                    start=numbers$BurnIn + 1,
@@ -83,23 +70,122 @@ extractSamples <- function(directoryWithBasename,
     readNamedSamples <-
         function(sampleFile, # .raw file
                  resFile=getResFile(sampleFile)) # corresponding .res file containing the varnames 
-    {
-        ## read unnamed data
-        sampleData <- readData(sampleFile)
-        ## and label correctly, if possible
-        sampleNames <- readData(resFile)[, 1] # assumes that names are in first column!
-        if(identical(ncol(sampleData),
-                     length(sampleNames)))
         {
-            colnames(sampleData) <- sampleNames
+            ## read unnamed data
+            sampleData <- readData(sampleFile)
+            ## and label correctly, if possible
+            sampleNames <- readData(resFile)[, 1] # assumes that names are in first column!
+            if(identical(ncol(sampleData),
+                         length(sampleNames)))
+            {
+                colnames(sampleData) <- sampleNames
+            }
+            else
+            {
+                warning("For sample file ", sampleFile, " the names read from ", resFile,
+                        " did not match the number of columns / parameters!")
+            }
+            
+            return(sampleData)
         }
+
+    ## process fixed effects
+    fixedInds <- grep(pattern=".+FixedEffects[[:digit:]]+_sample\\.raw",
+                      x=resFiles)
+    if(length(fixedInds))
+    {
+        samplesMatrix <- matrix(nrow=
+                                with(numbers,
+                                     (Iterations - BurnIn) / Thin),
+                                ncol=0)
         
-        return(sampleData)
+        for(sampleFile in resFiles[fixedInds])
+        {
+            samplesMatrix <- cbind(samplesMatrix,
+                                   as.matrix(readNamedSamples(sampleFile)))
+        }
+        ret$FixedEffects <- convert2Mcmc(samplesMatrix)
     }
 
-    
-    ## process nonlinear functions with rw or spatial priors, or random effects terms
-    rwInds <- grep(pattern=".+_(rw|spatial|random)_sample\\.raw",
+    ## process random effects
+    randomInds <- grep(pattern=".+_random_sample\\.raw",
+                       x=resFiles)
+
+    ## start random effects list if there is at least one such sample file
+    if(length(randomInds))
+        ret$RandomEffects <- list()  
+    for(sampleFile in resFiles[randomInds])
+    {
+        ## read function samples from this file, first without names,
+        ## because we cannot be sure that the res file has not too few name
+        ## because there could be a fixed effect included (see below)
+        functionSamples <- readData(sampleFile)
+
+        ## and the variance samples from the corresponding file
+        varianceSamples <- readData(sub(pattern="(.+)_sample\\.raw",
+                                        replacement="\\1_variance_sample\\.raw",
+                                        x=sampleFile))[, 1]
+        
+        filenameParts <- strsplit(x=basename(sampleFile),
+                                  split="_f_",
+                                  fixed=TRUE)[[1]]
+       
+        ## the first part before "_f_" and after the basename
+        ## is the name of the covariate for which a random effect was specified
+        covName <-
+            if(identical(filenameParts[1],
+                         resBasename))
+                "const"
+            else
+                sub(pattern=
+                    paste(resBasename, "_",
+                          sep=""),
+                    replacement="",
+                    x=filenameParts[1])
+
+        ## the name of the group id is before the tail of the second filename part 
+        idName <- sub(pattern="_random_sample\\.raw",
+                      replacement="",
+                      x=filenameParts[2])
+
+        ## check if fixed effects are included in random effects sample matrix,
+        ## and move them to the fixed effects. This is e.g. the case when 
+        ## "time * id(random)" is included in the formula,
+        ## and not "time + time * id(random, nofixed)".
+
+        if(file.exists(fixedPartResFile <- sub(pattern="sample.raw",
+                                               replacement="fixed.res",
+                                               x=sampleFile,
+                                               fixed=TRUE)))
+        {
+            ## move this last column to the fixed effects:
+
+            ## the new fixed effects mcmc matrix
+            oldColnames <- colnames(ret$FixedEffects)
+            ret$FixedEffects <- convert2Mcmc(cbind(ret$FixedEffects,
+                                                   functionSamples[, ncol(functionSamples)]))
+            colnames(ret$FixedEffects) <- c(oldColnames, covName)
+
+            ## delete the column from the random effects samples
+            functionSamples <- functionSamples[, - ncol(functionSamples)]
+        }
+
+        ## assign proper column names (the ID strings) to the random effect samples
+        sampleNames <- readData(getResFile(sampleFile))[, 1] 
+        colnames(functionSamples) <- sampleNames
+        
+        ## now insert the mcmc objects converted samples into the hierarchy
+        theseSamples <- list(list(functionSamples=convert2Mcmc(functionSamples),
+                                  varianceSamples=convert2Mcmc(varianceSamples)))
+        names(theseSamples) <- covName
+        
+        ret$RandomEffects[[idName]] <- c(ret$RandomEffects[[idName]],
+                                         theseSamples)
+    }
+
+   
+    ## process nonlinear functions with rw or spatial priors
+    rwInds <- grep(pattern=".+_(rw|spatial)_sample\\.raw",
                    x=resFiles)  
     for(sampleFile in resFiles[rwInds])
     {
@@ -114,24 +200,19 @@ extractSamples <- function(directoryWithBasename,
         ## coerce to MCMC objects and insert into list with correct name
         functionName <- sub(pattern=
                             paste(directoryWithBasename,
-                                  "(.+)_(rw|spatial|random)_sample\\.raw",
+                                  "(.+)_(rw|spatial)_sample\\.raw",
                                   sep="_"),
                             replacement="\\1_\\2",
                             x=sampleFile)
         ret[[functionName]] <- list(functionSamples=convert2Mcmc(functionSamples),
                                     varianceSamples=convert2Mcmc(varianceSamples))
-    }
-
+    }   
     
     ## process nonlinear functions modelled as psplines
     psplineInds <- grep(pattern=".+_pspline_sample\\.raw",
-                       x=resFiles)  
+                        x=resFiles)  
     for(sampleFile in resFiles[psplineInds])
     {       
-        ## read the variance samples from the corresponding file
-        varianceSamples <- readData(sub(pattern="(.+)_sample\\.raw",
-                                        replacement="\\1_variance_sample\\.raw",
-                                        x=sampleFile))[, 1]
 
         ## get corresponding covariate values (or gridpoints if it was restricted)
         covValues <- readData(getResFile(sampleFile))[, 1]
@@ -151,12 +232,12 @@ extractSamples <- function(directoryWithBasename,
                                       x=bayesxLog)
                                  + (1:10)] # look for numbers in the next ten lines
         
-        optionsNumbers <- getNumbers(stringList=
+        optionsNumbers <- getNumbers(beforeStringsList=
                                      list(knots="Number of knots:",
                                           degree="Degree of Splines:"),
                                      stringVector=optionsPart)
 
-        ## build design matrix of basis function values
+        ## derive knot locations
         eps <- 0.001
         minx <- min(covValues) - eps
         maxx <- max(covValues) + eps
@@ -166,38 +247,34 @@ extractSamples <- function(directoryWithBasename,
                      to=maxx + optionsNumbers$degree * step,
                      by=step)
 
-        design <- splines::spline.des(knots=knots,
-                                      x=covValues,
-                                      ord=optionsNumbers$degree + 1)$design
-
-        ## and generate function samples at covariate values from basis functions coefficients 
+        ## read the coefficients samples
         coefSamples <- as.matrix(readData(sampleFile))
-
-        functionSamples <- tcrossprod(coefSamples, design)
-        colnames(functionSamples) <- covValues
         
-        ## write function and variance samples into list
-        ret[[functionName]] <- list(functionSamples=convert2Mcmc(functionSamples),
-                                    varianceSamples=convert2Mcmc(varianceSamples))
-    }
-
-    
-    ## process fixed effects
-    fixedInds <- grep(pattern=".+FixedEffects[[:digit:]]+_sample\\.raw",
-                      x=resFiles)
-    if(length(fixedInds))
-    {
-        samplesMatrix <- matrix(nrow=
-                                with(numbers,
-                                     (Iterations - BurnIn) / Thin),
-                                ncol=0)
-        
-        for(sampleFile in resFiles[fixedInds])
+        ## create a function which returns function samples at given x values
+        getFunctionSamples <- function(xValues)
         {
-            samplesMatrix <- cbind(samplesMatrix,
-                                   as.matrix(readNamedSamples(sampleFile)))
+            ## build design matrix of basis function values
+            design <- splines::spline.des(knots=knots,
+                                          x=xValues,
+                                          ord=optionsNumbers$degree + 1)$design
+            
+            ## and generate function samples
+            ret <- tcrossprod(coefSamples, design)
+            colnames(ret) <- xValues
+
+            ## return
+            return(convert2Mcmc(ret))
         }
-        ret$FixedEffects <- convert2Mcmc(samplesMatrix)
+         
+        ## write function and variance samples into list,
+        ## but also save the function
+        ret[[functionName]] <-
+            list(functionSamples=getFunctionSamples(covValues),
+                 varianceSamples=
+                 convert2Mcmc(readData(sub(pattern="(.+)_sample\\.raw", 
+                                           replacement="\\1_variance_sample\\.raw",
+                                           x=sampleFile))[, 1]),
+                 getFunctionSamples=getFunctionSamples)
     }
 
     ## process deviance
@@ -208,16 +285,53 @@ extractSamples <- function(directoryWithBasename,
                         x=resFiles)
     if(length(devianceInd))
     {
-        ret$Deviance <- convert2Mcmc(head(readData(resFiles[devianceInd]),
-                                          -2)) # discard last two lines with pD and DIC
+        ## read the data
+        tmp <- readData(resFiles[devianceInd])
+
+        ## get the pD
+        ret$pD <- tmp["p_D", ]
+
+        ## and the DIC
+        ret$DIC <- tmp["DIC", ]
+        
+        # and the deviance samples (all but last two lines with pD and DIC)
+        ret$Deviance <- convert2Mcmc(head(tmp, -2)) 
     }    
 
-    ## process prediction means
-    ret$PredictMeans <- read.table(paste(directoryWithBasename,
-                                         "predictmean.raw",
-                                         sep="_"),
-                                   header=TRUE,
-                                   na.strings=c("NA", "."))
+    ## process scale parameter, if it exists (e.g. not for Poisson, but for Gaussian regression) 
+    if(file.exists(scaleFile <- paste(directoryWithBasename,
+                                      "scale_sample.raw",
+                                      sep="_")))
+    {
+        ret$scale <- convert2Mcmc(readData(scaleFile)[, 1])
+    }
+
+    ## process prediction means, if they exist
+    if(file.exists(predictMeanFile <- paste(directoryWithBasename,
+                                            "predictmean.raw",
+                                            sep="_")))
+    {
+        ret$PredictMeans <- read.table(predictMeanFile,
+                                       header=TRUE,
+                                       na.strings=c("NA", "."))
+    }
+
+    ## process samples of means, if they exist
+    if(file.exists(meanSamplesFile <- paste(directoryWithBasename,
+                                            "predictmu_mean_sample.raw",
+                                            sep="_")))
+    {
+        ret$means <- readData(meanSamplesFile)
+
+        ## the original names are b_1, b_2, ...
+        colnames(ret$means) <- gsub(pattern="b_",
+                                    replacement="",
+                                    x=colnames(ret$means),
+                                    fixed=TRUE)
+
+        ret$means <- convert2Mcmc(ret$means)
+    }
+    
     
     ## finished!
     return(ret)

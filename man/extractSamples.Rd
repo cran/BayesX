@@ -25,10 +25,20 @@ extractSamples(directoryWithBasename,
   \item{<function name>}{for P-Splines, Random Walks and spatial
   effects: a list with mcmc objects 'functionSamples' and
   'varianceSamples' containing the respective effects/function and
-  variance parameter samples.} 
-  \item{FixedEffects}{an mcmc object of all fixed simple parametric effects}
+  variance parameter samples.}  
+  \item{FixedEffects}{an mcmc object of all fixed simple parametric
+    effects}
+  \item{RandomEffects}{if there is at least one random effect in the
+    model, this is a list, with elements in the first hierarchy being
+    the group ID names, and elements in the second hierarchy being the
+    names of the covariates. The leafs are the mcmc objects
+    'functionSamples' and 'varianceSamples', as for the other
+    non-fixed terms}  
   \item{Deviance}{an mcmc object with the (unstandardized and saturated)
     deviance}
+  \item{means}{if the option \code{predictmu} was used, this mcmc object
+    contains the mean samples}
+  \item{scale}{an mcmc object with the possible scale parameter samples}
   \item{PredictMeans}{data.frame corresponding to the possible
     predictmean file in the BayesX directory}
 }
