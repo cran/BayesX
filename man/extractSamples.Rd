@@ -39,11 +39,15 @@ extractSamples(directoryWithBasename,
   \item{means}{if the option \code{predictmu} was used, this mcmc object
     contains the mean samples}
   \item{scale}{an mcmc object with the possible scale parameter samples}
+  \item{lassoCoefficients}{an mcmc object with the possible lasso regression parameter samples}
+  \item{ridgeCoefficients}{an mcmc object with the possible ridge regression parameter samples}
   \item{PredictMeans}{data.frame corresponding to the possible
     predictmean file in the BayesX directory}
+  Additionally, entries for possibly remaining lasso or ridge variance
+  parameters etc. are included in the return list.
 }
 
-\author{Daniel Sabanes Bove}
+\author{Daniel Sabanes Bove, with contributions by Fabian Scheipl}
 \section{Warning}{
 You should be sure that only one MCMC run is saved in the given results
 directory in order to get sensible results out of this function.

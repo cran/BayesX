@@ -8,7 +8,7 @@ Visualises variables that are spatially aligned according to a given map object.
 }
 \usage{
 drawmap(data, map, regionvar=2, plotvar=3, limits, cols="hcl", nrcolors=100, 
-        swapcolors=FALSE, pcat=FALSE, hcl.par=list(h=c(130,25), c=100, l=c(90,70)), 
+        swapcolors=FALSE, pcat=FALSE, hcl.par=list(h=c(120, 0), c=60, l=c(45,60), power=1.2), 
         hsv.par=list(s=1, v=1), legend=TRUE, drawnames=FALSE, cex.names=0.7, 
         cex.legend=0.7, mar.min=2, density=15, ...)}
 
@@ -65,9 +65,9 @@ drawmap(res, map=germany, nrcolors=10, cols="hcl")
 drawmap(res, map=germany, nrcolors=10, cols="hsv")
 drawmap(res, map=germany, nrcolors=10, cols="grey")
 
-drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(260,25), c=100, l=c(90,70)))
-drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(130,25), c=70, l=c(90,70)))
-drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(130,25), c=100, l=c(100,60)))
+drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(0,120), c=60, l=c(45,90), power=1.2))
+drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(300,120), c=60, l=c(45,90), power=1.2))
+drawmap(res, map=germany, cols="hcl", hcl.par=list(h=c(40,260), c=60, l=c(45,90), power=1.2))
 drawmap(res, map=germany, cols="hsv", hsv.par=list(s=0.7, v=0.7))
 }
 

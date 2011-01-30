@@ -3,7 +3,7 @@ drawmap <- function(data, map,
                     limits,
                     cols="hcl", nrcolors=100, swapcolors=FALSE,
                     pcat=FALSE,
-                    hcl.par=list(h=c(130,25), c=100, l=c(90,70)),
+                    hcl.par=list(h=c(120, 0), c=60, l=c(45,60), power=1.2),
                     hsv.par=list(s=1, v=1), legend=TRUE, drawnames=FALSE, cex.names=0.7, 
                     cex.legend=0.7, mar.min=2, density=15, ...)
 {
@@ -77,6 +77,7 @@ drawmap <- function(data, map,
                 h <- hcl.par$h
                 c <- hcl.par$c
                 l <- hcl.par$l
+                power <- hcl.par$power
             }
             if(cols == "hsv"){
                 s <- hsv.par$s
@@ -133,8 +134,8 @@ drawmap <- function(data, map,
             if (cols == "hcl") {
                 if (swapcolors == TRUE)
                     h <- rev(h)
-                fill.colors <- colorspace::diverge_hcl(nrcolors,h=h,c=c,l=l)[fill.colors]
-                legend.colors <- colorspace::diverge_hcl(nrcolors,h=h,c=c,l=l)
+                fill.colors <- colorspace::diverge_hcl(nrcolors,h=h,c=c,l=l,power=power)[fill.colors]
+                legend.colors <- colorspace::diverge_hcl(nrcolors,h=h,c=c,l=l,power=power)
             }
             if (cols == "hsv") {
                 fill.colors <- (fill.colors-1)/(3*(nrcolors-1))

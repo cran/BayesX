@@ -26,7 +26,7 @@ read.bnd(file, sorted=FALSE)
 
 \references{BayesX Reference Manual. Available from \url{http://www.stat.uni-muenchen.de/~bayesx/}}
 
-\author{Felix Heinzl, Thomas Kneib, Andreas Brezger}
+\author{Daniel Sabanes Bove, Felix Heinzl, Thomas Kneib, Andreas Brezger}
 
 \seealso{\code{\link{write.bnd}},\code{\link{drawmap}},\code{\link{read.gra}},\code{\link{write.gra}}}
 

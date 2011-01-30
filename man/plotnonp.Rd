@@ -9,7 +9,7 @@ Plots nonparametric function estimates obtained from BayesX
 
 \usage{
 plotnonp(data, x = 2, y = c(3, 4, 5, 7, 8), ylim = NULL, 
-         lty = c(1, 2, 3, 2, 3), cols = rep(1, length(y)), month, year, step=12, 
+         lty = c(1, 2, 3, 3, 2), cols = rep(1, length(y)), month, year, step=12, 
          xlab, ylab, ...)
 }
 

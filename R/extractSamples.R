@@ -1,6 +1,6 @@
 #####################################################################################
 ## Author: Daniel Sabanes Bove [daniel *.* sabanesbove *a*t* campus *.* lmu *.* de]
-## Time-stamp: <[extractSamples.R] by DSB Fre 07/08/2009 15:42 (CEST)>
+## Time-stamp: <[extractSamples.R] by DSB Die 30/03/2010 10:09 (CEST)>
 ##
 ## Description:
 ## Extract samples and prediction info from BayesX results directory.
@@ -202,7 +202,7 @@ extractSamples <- function(directoryWithBasename,
                             paste(directoryWithBasename,
                                   "(.+)_(rw|spatial)_sample\\.raw",
                                   sep="_"),
-                            replacement="\\1_\\2",
+                            replacement="\\1",
                             x=sampleFile)
         ret[[functionName]] <- list(functionSamples=convert2Mcmc(functionSamples),
                                     varianceSamples=convert2Mcmc(varianceSamples))
@@ -222,7 +222,7 @@ extractSamples <- function(directoryWithBasename,
                             paste(directoryWithBasename,
                                   "(.+)_pspline_sample\\.raw",
                                   sep="_"),
-                            replacement="\\1_pspline",
+                            replacement="\\1",
                             x=sampleFile)
         
         ## extract pspline parameters from log file
@@ -297,13 +297,83 @@ extractSamples <- function(directoryWithBasename,
         # and the deviance samples (all but last two lines with pD and DIC)
         ret$Deviance <- convert2Mcmc(head(tmp, -2)) 
     }    
-
-    ## process scale parameter, if it exists (e.g. not for Poisson, but for Gaussian regression) 
-    if(file.exists(scaleFile <- paste(directoryWithBasename,
-                                      "scale_sample.raw",
-                                      sep="_")))
+   
+    ## process LASSO coefficients
+    lassoInds <- grep(pattern=
+                      paste(directoryWithBasename, 
+                            "shrinkage_lasso",
+                            sep="_"),
+                      x=resFiles)
+    if (length(lassoInds))
     {
-        ret$scale <- convert2Mcmc(readData(scaleFile)[, 1])
+        ret$lassoCoefficients <- convert2Mcmc(readData(resFiles[lassoInds]))
+    }
+
+    ## process Ridge coefficients
+    ridgeInds <- grep(pattern=
+                      paste(directoryWithBasename, 
+                            "shrinkage_ridge",
+                            sep="_"),
+                      x=resFiles)
+    if (length(ridgeInds))
+    {
+        ret$ridgeCoefficients <- convert2Mcmc(readData(resFiles[ridgeInds]))
+    }
+    ## todo: save lasso/ridge variances here as well?
+
+    ## process scale parameter, if it exists (e.g. not for Poisson, but for Gaussian regression)
+    scaleInd <- grep(pattern=
+                     paste(directoryWithBasename,
+                           "scale_sample\\.raw",
+                           sep="_"),
+                     x=resFiles)
+    if(length(scaleInd))
+    {
+        ret$scale <- convert2Mcmc(readData(resFiles[scaleInd])[, 1])
+    }
+    
+    ## process samples of means, if they exist
+    meanInd <- grep(pattern=
+                    paste(directoryWithBasename,
+                          "predictmu_mean_sample\\.raw",
+                          sep="_"),
+                    x=resFiles)
+    if(length(meanInd))
+    {
+        ret$means <- readData(resFiles[meanInd])
+        
+        ## the original names are b_1, b_2, ...
+        colnames(ret$means) <- gsub(pattern="b_",
+                                    replacement="",
+                                    x=colnames(ret$means),
+                                    fixed=TRUE)
+        
+        ret$means <- convert2Mcmc(ret$means)
+    }
+
+    ## which are the indexes of the samples files which have not been used yet?
+    unusedInds <- setdiff(seq_along(resFiles),
+                          c(devianceInd,
+                            randomInds,
+                            fixedInds,
+                            psplineInds,
+                            rwInds,
+                            lassoInds,
+                            ridgeInds,
+                            scaleInd,
+                            meanInd))
+
+    ## if there are any unused files, extract the samples from them
+    for (sampleFile in resFiles[unusedInds])
+    {
+        parName <- gsub(pattern=
+                        paste(directoryWithBasename, 
+                              "_(.+)_sample\\.raw",
+                              sep = ""),
+                        replacement="\\1",
+                        x=sampleFile)
+        
+        ret[[parName]] <- convert2Mcmc(readData(sampleFile))
     }
 
     ## process prediction means, if they exist
@@ -314,24 +384,7 @@ extractSamples <- function(directoryWithBasename,
         ret$PredictMeans <- read.table(predictMeanFile,
                                        header=TRUE,
                                        na.strings=c("NA", "."))
-    }
-
-    ## process samples of means, if they exist
-    if(file.exists(meanSamplesFile <- paste(directoryWithBasename,
-                                            "predictmu_mean_sample.raw",
-                                            sep="_")))
-    {
-        ret$means <- readData(meanSamplesFile)
-
-        ## the original names are b_1, b_2, ...
-        colnames(ret$means) <- gsub(pattern="b_",
-                                    replacement="",
-                                    x=colnames(ret$means),
-                                    fixed=TRUE)
-
-        ret$means <- convert2Mcmc(ret$means)
-    }
-    
+    }    
     
     ## finished!
     return(ret)

@@ -80,6 +80,8 @@ read.bnd <- function(file, sorted=FALSE)
     ## so filling the list with the points is easy now
     for(k in seq_along(map)) {
         map[[k]] <- data.numeric[startInds[k]:(startInds[k+1] - 1), ]
+        if(sum(map[[k]][1,] == map[[k]][polyLengths[k],]) != 2)
+           warning(paste("Note: First and last point of polygon ",k," (region ",names(map)[k],") are not identical", sep=""), call. = FALSE)
     }
 
     ## processing finished

@@ -1,3 +1,14 @@
+2011-01-30 Thomas Kneib <thomas.kneib@uni-oldenburg.de>
+
+  * Minor bug fix in function plotnonp (confused default line types for 
+    confidence intervals)
+
+
+2010-03-26 Thomas Kneib <thomas.kneib@uni-oldenburg.de>
+
+  * Changed defaults in the hcl color scheme for drawmap
+
+
 2009-10-30  Felix Heinzl <felix.heinzl@stat.uni-muenchen.de>, 
             Thomas Kneib <thomas.kneib@uni-oldenburg.de>
 
