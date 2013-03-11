@@ -26,7 +26,4 @@ Map object in boundary format rounded to the specified precision.
 
 \seealso{\code{\link{read.bnd}},\code{\link{write.bnd}}}
 
-\examples{
-}
-
 \keyword{spatial}

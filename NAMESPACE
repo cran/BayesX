@@ -22,7 +22,9 @@ export(add.neighbor,                    # neighbors handling
        write.bnd,
        read.gra,
        write.gra,
-       extractSamples)                  # results handling
+       extractSamples,                  # results handling
+       akimaPermit,                     # allow usage of akima despite its licence
+       akimaPermitStatus)               # that restricts use to non-commercial purposes
 
 
 ## spatial packages imports ********************

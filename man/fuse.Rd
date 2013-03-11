@@ -24,7 +24,4 @@ Map object in boundary format with the specified regions combined.
 
 \seealso{\code{\link{read.bnd}},\code{\link{write.bnd}}}
 
-\examples{
-}
-
 \keyword{spatial}

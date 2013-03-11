@@ -22,7 +22,7 @@ shp2bnd(shpname, regionnames, check.is.in = TRUE)
   map. See \code{\link{read.bnd}} for more information on the format.
 }
 
-\references{BayesX Reference Manual. Available from \url{http://www.stat.uni-muenchen.de/~bayesx/}}
+\references{BayesX Reference Manual. Available from \url{http://www.bayesx.org}}
 
 \author{Felix Heinzl, Daniel Sabanes Bove, Thomas Kneib with contributions by Michael Hoehle and Frank Sagerer}
 

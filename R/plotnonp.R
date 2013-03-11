@@ -1,4 +1,4 @@
-plotnonp <- function(data, x=2, y=c(3,4,5,7,8), ylim=NULL, lty=c(1,2,3,3,2),
+plotnonp <- function(data, x=2, y=c(3,4,5,7,8), ylim=NULL, lty=c(1,2,3,2,3),
                      cols=rep(1,length(y)), month, year, step=12, xlab, ylab, ...)
 {
     if(is.data.frame(data))
@@ -48,10 +48,10 @@ plotnonp <- function(data, x=2, y=c(3,4,5,7,8), ylim=NULL, lty=c(1,2,3,3,2),
             start2 <- block[1, x]
             stop2 <- max(block[, x], na.rm = TRUE)
             pos2 <- seq(start2, stop2, 1)
-            axis(side = 1, at = pos2, label = label2, mgp = c(3, 0.5, 0))
-            axis(side = 1, at = pos, label = label, mgp = c(3, 1.5, 0))
+            axis(side = 1, at = pos2, labels = label2, mgp = c(3, 0.5, 0))
+            axis(side = 1, at = pos, labels = label, mgp = c(3, 1.5, 0))
         }
-        else axis(side = 1, at = pos, label = label)
+        else axis(side = 1, at = pos, labels = label)
     }
     else axis(1)
 

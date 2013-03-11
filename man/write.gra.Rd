@@ -17,13 +17,10 @@ write.gra(map, file, replace = FALSE)
   \item{replace}{Should an existing file be overwritten with the new version?}
 }
 
-\references{BayesX Reference Manual. Available from \url{http://www.stat.uni-muenchen.de/~bayesx/}}
+\references{BayesX Reference Manual. Available from \url{http://www.bayesx.org}}
 
 \author{Thomas Kneib, Felix Heinzl}
 
 \seealso{\code{\link{write.bnd}},\code{\link{read.gra}},\code{\link{read.bnd}}}
-
-\examples{
-}
 
 \keyword{spatial}

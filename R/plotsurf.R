@@ -16,6 +16,8 @@ plotsurf <- function(data, x=2, y=3, z=4, mode=1, ticktype="detailed", expand=0.
 
     ## interp is from package akima, but this package does not have a namespace,
     ## so we have to load the whole package (see DESCRIPTION).
+    if(!isTRUE(akimaPermitStatus()))
+       stop("The licence for akima is not Free or Open Source and explicitly forbids commercial use.\nIf you want to use akima anyway, call akimaPermit() (see help(akimaPermit) for details.")
     data <- akima::interp(x, y, z)
     x <- data$x
     y <- data$y
@@ -31,3 +33,14 @@ plotsurf <- function(data, x=2, y=3, z=4, mode=1, ticktype="detailed", expand=0.
     return(invisible())
 }
 
+akimaPermit <- function ()
+{
+    if ("akima" %in% .packages(all.available = TRUE))
+        assign(".akimaStatus", TRUE, envir=.BAYESX_CACHE)
+    akimaPermitStatus()
+}
+
+akimaPermitStatus <- function ()
+  {
+  get(".akimaStatus", envir=.BAYESX_CACHE)
+  }

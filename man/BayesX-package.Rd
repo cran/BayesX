@@ -20,15 +20,15 @@ analyses performed with BayesX.
 \tabular{ll}{
 Package: \tab BayesX\cr
 Type: \tab Package\cr
-Version: \tab 0.2\cr
-Date: \tab 2009-03-10\cr
+Version: \tab 0.2-6\cr
+Date: \tab 2013-03-11\cr
 License: \tab GPL-2\cr
 }}
 
 \author{Thomas Kneib, Felix Heinzl, Andreas Brezger, Daniel Sabanes Bove
 
-Maintainer: Thomas Kneib <thomas.kneib@uni-oldenburg.de>}
+Maintainer: Thomas Kneib <tkneib@uni-goettingen.de>}
 
-\references{\url{http://www.stat.uni-muenchen.de/~bayesx/}}
+\references{\url{http://www.bayesx.org}}
 
 \keyword{package}
