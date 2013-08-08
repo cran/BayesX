@@ -29,7 +29,8 @@ gra2nb(graObject)
 \examples{
 ## first nb to gra:
 library(spdep)
-example(columbus)
+library(maptools)
+columbus <- readShapePoly(system.file("etc/shapes/columbus.shp", package="spdep")[1])
 colNb <- poly2nb(columbus)
 ## ... here manual editing is possible ...
 ## then export to graph format

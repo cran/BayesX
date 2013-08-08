@@ -3,6 +3,7 @@
 export(add.neighbor,                    # neighbors handling
        delete.neighbor,
        get.neighbor,
+       fuse,
        drawmap,                         # plotting
        get.centroids,
        smooth.bnd,
@@ -36,6 +37,11 @@ importFrom(sp,                          # package sp
            SpatialPolygons,
            bbox,
            polygons)
+
+importFrom(maptools,                          # package maptools
+           unionSpatialPolygons,
+           readShapePoly,
+           gpclibPermit)              # functions
 
 ## not necessary as shapefiles does not have a namespace:
 ##

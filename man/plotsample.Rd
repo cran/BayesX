@@ -29,7 +29,8 @@ plotsample.coda(data, ask = TRUE, ...)
 \seealso{\code{\link{drawmap}},\code{\link{plotautocor}},\code{\link{plotnonp}},\code{\link{plotsurf}},}
 
 \examples{
-res <- read.table(system.file("examples/nonparametric_f_x_pspline_sample.raw", package="BayesX"), header=TRUE)
+res <- read.table(system.file("examples/nonparametric_f_x_pspline_sample.raw",
+                              package="BayesX"), header=TRUE)
 plotsample(res)
 }
 
