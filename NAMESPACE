@@ -43,11 +43,9 @@ importFrom(maptools,                          # package maptools
            readShapePoly,
            gpclibPermit)              # functions
 
-## not necessary as shapefiles does not have a namespace:
-##
-## importFrom(shapefiles,                  # package shapefiles
-##            read.shapefile,              # functions
-##            read.dbf)
+importFrom(shapefiles,                  # package shapefiles
+            read.shapefile,              # functions
+            read.dbf)
 
 ## imports for drawing ********************
 

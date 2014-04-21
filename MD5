@@ -1,5 +1,5 @@
-8abbbac7adc526498f152d27f8b2e240 *DESCRIPTION
-541b76e0df1bd83868aae76e4ea8d9c5 *NAMESPACE
+f15b7e2a47fd7dc913387719bb5f5b2a *DESCRIPTION
+dd4e4b398c5e57ff0cf66348340222e6 *NAMESPACE
 3dd1acd7ecd20a3cd71b592ddc4f3b65 *R/AAA.R
 e7cec88be75d3505e6e5963e243a3e85 *R/add.neighbor.R
 54dd500564803fc6b17ba15c30f00c27 *R/bnd2gra.R
@@ -28,7 +28,6 @@ eb0dd68e66a982e419a6f483666f6b51 *inst/ChangeLog
 5d3f9fc43b60a874fe6ee3f0e6428f33 *inst/examples/createdata.R
 45a137034627f89e67eb5c3f6c17acfb *inst/examples/examples.prg
 8ecf4b52e404af925d3ea99cf7efe214 *inst/examples/germany.bnd
-0e78769f64fd3984d8dc0c375c195d1a *inst/examples/germany.bnd.BAK
 17ea3c4b71a0b91ae55e2e2c2da2501f *inst/examples/germany.gra
 97bad649b1037544db92a38e2f5a20f7 *inst/examples/germany.raw
 d88028f3a4ec76407b8f0697709da8e9 *inst/examples/germany2001.bnd
@@ -42,9 +41,9 @@ e0084a07985384cf9fa9ee75fbf625de *inst/examples/nonparametric_f_x_pspline_sample
 6ad501f88f68048db9cae993a117fcd9 *inst/examples/northamerica_adm0.shp
 92eedb08ae859683789bc31c8e328c73 *inst/examples/northamerica_adm0.shx
 aa440284119323e1ae449dcf1dccbc91 *inst/examples/samples/createData.R
-31e26c9e8ac50b6036345c29928337c8 *inst/examples/samples/data.txt
+bdc530a29ddc8396dfd842373f0707de *inst/examples/samples/data.txt
 80228b8dba009e95b921454670424c4b *inst/examples/samples/example.prg
-def46a0e2110fbca72ef584b3ec1e43a *inst/examples/samples/log.txt
+5a08c162a7dd7e91a052ba6dc23cdfb4 *inst/examples/samples/log.txt
 088968419a483db6bf4c283ab26cc0a0 *inst/examples/samples/res_FixedEffects1.res
 83693decd02ab1c7073dfb2640df24dc *inst/examples/samples/res_FixedEffects1_sample.raw
 175988b2802ee55a9480be5efc9132af *inst/examples/samples/res_deviance_sample.raw
@@ -66,7 +65,7 @@ bad1221ec7fab0698a822030f9412bf5 *inst/examples/samples/res_f_x2_rw_variance_sam
 6ba888237ddb00c91e9c7fb02a859266 *inst/examples/samples/res_graphics.prg
 bee6a929fca6a700ae715d8bb6c2421d *inst/examples/samples/res_model_summary.tex
 34f9271ddb00a857024aa12a1db75fa1 *inst/examples/samples/res_predictmean.raw
-c25aa47518bf7a861e36514940e3b2f8 *inst/examples/samples/res_r_splus.txt
+b9c8f5d0f55faa9ae96473a961abefef *inst/examples/samples/res_r_splus.txt
 f7b147fdaea17874d0912b33ff40cec6 *inst/examples/samples/res_scale.res
 a37b2d3b90548e848a14f10dd4314104 *inst/examples/samples/res_scale_sample.raw
 2f5d29b3ddf6c79410f9a36881e53d4d *inst/examples/samples/res_stata.do
