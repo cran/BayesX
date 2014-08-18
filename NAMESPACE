@@ -12,6 +12,8 @@ export(add.neighbor,                    # neighbors handling
        plotsample,
        plotsample.coda,
        plotsurf,
+	   hpd,								# intervals
+	   hpd.coda,
        nb2gra,                          # conversions
        gra2nb,
        sp2bnd,

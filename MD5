@@ -1,5 +1,5 @@
-f15b7e2a47fd7dc913387719bb5f5b2a *DESCRIPTION
-dd4e4b398c5e57ff0cf66348340222e6 *NAMESPACE
+4ac32a1df18ead00ce6a79204d7215d0 *DESCRIPTION
+d767224f4d52c2f1ce96569855160ba7 *NAMESPACE
 3dd1acd7ecd20a3cd71b592ddc4f3b65 *R/AAA.R
 e7cec88be75d3505e6e5963e243a3e85 *R/add.neighbor.R
 54dd500564803fc6b17ba15c30f00c27 *R/bnd2gra.R
@@ -11,6 +11,7 @@ f22788a6e353f5d3e4d6035593869fc7 *R/fuse.R
 f93a81536d38773fc1622bdf92d532ab *R/get.centroids.R
 c89b6046e015f470c6c9ff3f3b852fc3 *R/get.neighbor.R
 4500e1962a0118b0f584c678dbf0dc9d *R/getNumbers.R
+a88c77266d5347c60cebdd9d7f861570 *R/hpd.R
 c972394e944765d99d4001d32b28d0d1 *R/nbAndGraConversion.R
 88372b3336d4410a58b01cb22fc8b669 *R/plotautocor.R
 9d3bedb9829b296ef947aa8ad1d4f601 *R/plotnonp.R
@@ -86,6 +87,7 @@ a37b2d3b90548e848a14f10dd4314104 *inst/examples/samples/res_scale_sample.raw
 126f2ccfdefe1f0605cfac1f1a784b75 *man/get.centroids.Rd
 546b98467ee4727696d9043bffe74809 *man/get.neighbor.Rd
 34548a99684caf55a2ff05163433e51f *man/getNumbers.Rd
+450bae2ebce07cdd52518c933c8e2cc8 *man/hpd.Rd
 f962ff29b9e2bd160e1e33647ea8e318 *man/nbAndGraConversion.Rd
 1f86bf6f541f00cb71f5fc5e05e8f3ba *man/plotautocor.Rd
 ff4a7a9c685047e2a87f58c2bc048e19 *man/plotnonp.Rd
