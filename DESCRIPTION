@@ -1,8 +1,8 @@
 Package: BayesX
 Type: Package
 Title: R Utilities Accompanying the Software Package BayesX
-Version: 0.3-0
-Date: 2018-05-18
+Version: 0.3-1
+Date: 2019-08-23
 Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role = c("aut", "cre"), email = "Nikolaus.Umlauf@uibk.ac.at"),
   person(given = "Thomas", family = "Kneib", role = "aut", email = "tkneib@uni-goettingen.de"),
   person(given = "Nadja", family = "Klein", role = "aut", email = "n.klein@uni-koeln.de"),
@@ -20,7 +20,7 @@ Suggests: spdep, akima, gpclib, rgeos
 LazyLoad: yes
 License: GPL-2 | GPL-3
 NeedsCompilation: no
-Packaged: 2018-05-18 03:07:22 UTC; nik
+Packaged: 2019-08-24 07:25:32 UTC; nik
 Author: Nikolaus Umlauf [aut, cre],
   Thomas Kneib [aut],
   Nadja Klein [aut],
@@ -29,4 +29,4 @@ Author: Nikolaus Umlauf [aut, cre],
   Daniel Sabanes Bove [ctb]
 Maintainer: Nikolaus Umlauf <Nikolaus.Umlauf@uibk.ac.at>
 Repository: CRAN
-Date/Publication: 2018-05-18 05:07:54 UTC
+Date/Publication: 2019-08-24 07:50:02 UTC
