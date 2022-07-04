@@ -1,7 +1,7 @@
 Package: BayesX
 Type: Package
 Title: R Utilities Accompanying the Software Package BayesX
-Version: 0.3-1
+Version: 0.3-1.1
 Date: 2019-08-23
 Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role = c("aut", "cre"), email = "Nikolaus.Umlauf@uibk.ac.at"),
   person(given = "Thomas", family = "Kneib", role = "aut", email = "tkneib@uni-goettingen.de"),
@@ -16,11 +16,11 @@ Description: Functions for exploring and visualising estimation results
   analyses performed with BayesX.
 Depends: shapefiles
 Imports: sp, maptools, colorspace, coda, splines, methods
-Suggests: spdep, akima, gpclib, rgeos
+Suggests: spdep, interp, gpclib, rgeos
 LazyLoad: yes
 License: GPL-2 | GPL-3
 NeedsCompilation: no
-Packaged: 2019-08-24 07:25:32 UTC; nik
+Packaged: 2022-07-04 08:59:50 UTC; ripley
 Author: Nikolaus Umlauf [aut, cre],
   Thomas Kneib [aut],
   Nadja Klein [aut],
@@ -29,4 +29,4 @@ Author: Nikolaus Umlauf [aut, cre],
   Daniel Sabanes Bove [ctb]
 Maintainer: Nikolaus Umlauf <Nikolaus.Umlauf@uibk.ac.at>
 Repository: CRAN
-Date/Publication: 2019-08-24 07:50:02 UTC
+Date/Publication: 2022-07-04 11:29:20 UTC

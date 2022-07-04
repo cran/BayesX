@@ -1,6 +1,5 @@
-6eb0d5296348a29e04a19ff8ed657a19 *DESCRIPTION
-80fc5d829b45e4a8d397b142a8e34869 *NAMESPACE
-0160d2dd50ff65816a908a4a4d98ac9e *R/AAA.R
+4aeda6b1b31ce0bbf31f62ab385d3d3f *DESCRIPTION
+775a16b376d8b2a9adcef5625f06ea44 *NAMESPACE
 95268b3539d828f261295f5e3d9ac480 *R/add.neighbor.R
 8bacf3045df222b4a8b767ce206a9e8e *R/bnd2gra.R
 124638c8b2b324c3e2859556ba13931e *R/createxymap.R
@@ -16,7 +15,7 @@ b4b441fb12c52de397fad76fdbca5c81 *R/getNumbers.R
 929d25c424f80841646e31d85c0d0c20 *R/plotautocor.R
 a8f1ca812c2679ca9deaafe256799361 *R/plotnonp.R
 255aae0fc6be0f07c30af2bdb46957c5 *R/plotsample.R
-bde3973620603fbf3ae96e79fd948503 *R/plotsurf.R
+503e0ff0e20c497a3192bac986588859 *R/plotsurf.R
 edae7a759e2793f8878c4292d9378f71 *R/read.bnd.R
 c8577b1b793039f00221e042e5143025 *R/read.gra.R
 868fdf8e7b586c11f781087dc6349542 *R/ringDirxy.R
@@ -92,7 +91,7 @@ f962ff29b9e2bd160e1e33647ea8e318 *man/nbAndGraConversion.Rd
 1f86bf6f541f00cb71f5fc5e05e8f3ba *man/plotautocor.Rd
 ff4a7a9c685047e2a87f58c2bc048e19 *man/plotnonp.Rd
 5886be411b98dfe959d7e1401304e669 *man/plotsample.Rd
-f86712b376c1cab07e7ade3a393e16bd *man/plotsurf.Rd
+6fa425c19a833082752d9488865e39b3 *man/plotsurf.Rd
 f48a87e2207878227fa725b5ba6a31b5 *man/read.bnd.Rd
 abdceae8d64c3055f52579aee2c51a49 *man/read.gra.Rd
 caada2667f49de67b5aa2bc924a60589 *man/ringDirxy.Rd

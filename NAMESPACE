@@ -25,9 +25,7 @@ export(
   "write.bnd",
   "read.gra",
   "write.gra",
-  "extractSamples",                  ## results handling
-  "akimaPermit",                     ## allow usage of akima despite its licence
-  "akimaPermitStatus"
+  "extractSamples"                   ## results handling
 )
 
 ## imports
