@@ -25,7 +25,9 @@ export(
   "write.bnd",
   "read.gra",
   "write.gra",
-  "extractSamples"                   ## results handling
+  "extractSamples"                  ## results handling
+#  "akimaPermit",                     ## allow usage of akima despite its licence
+#  "akimaPermitStatus"
 )
 
 ## imports
@@ -40,13 +42,6 @@ importFrom(
 )
 
 importFrom(
-  "maptools",
-  "unionSpatialPolygons",
-  "readShapePoly",
-  "gpclibPermit"
-)
-
-importFrom(
   "shapefiles",
   "read.shapefile",
   "read.dbf"
@@ -55,6 +50,11 @@ importFrom(
 importFrom(
   "colorspace",
   "diverge_hcl"
+)
+
+importFrom(
+  "interp",
+  "interp"
 )
 
 importFrom(
